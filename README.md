@@ -26,19 +26,6 @@ Cari baris ```<select id="ageGroup">```.
 Tambahkan kategori baru dengan format ```<option value="[nama_kategori]">[nama_kategori]</option>.```
     Simpan perubahan dan buka ulang browser untuk melihat perubahan.
 
-### Modifikasi Kode JavaScript
-Untuk menambahkan kategori baru, Anda juga perlu menambahkan surat-surat yang sesuai ke dalam array surahJuz30 dan jumlah ayat ke dalam array surahAyahCount di file script.js. Contoh tambahan kategori baru:
-
-```javascript
-const surahJuz30 = {
-    [nama_kategori]: ['surat1', 'surat2', 'surat3'] // Tambahkan surat-surat yang sesuai
-};
-
-const surahAyahCount = {
-    [nama_kategori]: [jumlah_ayah_surat1, jumlah_ayah_surat2, jumlah_ayah_surat3] // Tambahkan jumlah ayat untuk setiap surat
-};
-```
-
 ### Contoh Modifikasi
 Misalkan Anda ingin menambah kategori "Kelas 7-9" dengan surat Al - A'la s/d An Nas, Anda dapat menambahkan kode berikut:
 
