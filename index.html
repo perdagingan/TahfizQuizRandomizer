@@ -181,7 +181,7 @@
 
         try {
             const ayat = await fetchAyat(randomQuestion.surah, randomQuestion.ayah);
-            questionText.innerHTML = `Usia: ${ageGroup.toUpperCase()}<br>Soal: Surah ${randomQuestion.surah}, Ayat ${randomQuestion.ayah}<br><br><p class="noto-naskh-arabic-ayat">${ayat}</p>`;
+            questionText.innerHTML = `Usia: ${ageGroup.toUpperCase()}<br>Soal: Surah ${randomQuestion.surah}, Ayat ${randomQuestion.ayah}<br><br><p class="noto-naskh-arabic-ayat">${ayat}</p><br><p>Lanjutkan hingga 3 ayat berikutnya</p>`;
         } catch (error) {
             questionText.innerText = 'Gagal memuat soal, coba lagi!';
             console.error(error);
