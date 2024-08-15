@@ -164,8 +164,12 @@
         const ayat = await fetchAyat(randomQuestion.surah, randomQuestion.ayah);
         questionText.innerHTML = `Usia: ${ageGroup.toUpperCase()}<br>Soal: Surah ${randomQuestion.surah}, Ayat ${randomQuestion.ayah}<br><br><p class="noto-naskh-arabic-ayat">${ayat}</p>`;
     } catch (error) {
+        const httpUrl = url.replace('https://', 'http://');
+        const httpResponse = await fetch(httpUrl);
+        const httpData = await httpResponse.json();
         questionText.innerText = 'Gagal memuat soal, coba lagi!';
-        console.error(error);
+        return httpData.data.text;
+        console.error("Kamu pake http yaa...");
     }
 });
     </script>
