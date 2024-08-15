@@ -84,7 +84,7 @@
         }
 
     </style>
-    <script src="./script.js"></script>
+    
 </head>
 <body>
     <div class="container">
@@ -145,33 +145,48 @@
 
     async function fetchAyat(surah, ayah) {
         const surahNumber = surahNumberMap[surah];
-        const response = await fetch(`https://api.alquran.cloud/v1/ayah/${surahNumber}:${ayah}`);
-        const data = await response.json();
-        return data.data.text;
+        const url = `https://api.alquran.cloud/v1/ayah/${surahNumber}:${ayah}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Failed to fetch data');
+            }
+            const data = await response.json();
+            return data.data.text;
+        } catch (error) {
+            const httpUrl = url.replace('https://', 'http://');
+            try {
+                const httpResponse = await fetch(httpUrl);
+                if (!httpResponse.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const httpData = await httpResponse.json();
+                return httpData.data.text;
+            } catch (httpError) {
+                console.error('Error fetching data:', httpError);
+                return null;
+            }
+        }
     }
 
     generateButton.addEventListener('click', async () => {
-    const ageGroup = ageGroupSelect.value;
-    if (usedQuestions.size >= surahJuz30[ageGroup].length * 5) {
-        usedQuestions.clear();
-    }
+        const ageGroup = ageGroupSelect.value;
+        if (usedQuestions.size >= surahJuz30[ageGroup].length * 5) {
+            usedQuestions.clear();
+        }
 
-    const randomQuestion = getRandomQuestion(ageGroup);
+        const randomQuestion = getRandomQuestion(ageGroup);
 
-    questionText.innerHTML = '<span class="loading">Memuat, harap tunggu</span>';
+        questionText.innerHTML = '<span class="loading">Memuat, harap tunggu</span>';
 
-    try {
-        const ayat = await fetchAyat(randomQuestion.surah, randomQuestion.ayah);
-        questionText.innerHTML = `Usia: ${ageGroup.toUpperCase()}<br>Soal: Surah ${randomQuestion.surah}, Ayat ${randomQuestion.ayah}<br><br><p class="noto-naskh-arabic-ayat">${ayat}</p>`;
-    } catch (error) {
-        const httpUrl = url.replace('https://', 'http://');
-        const httpResponse = await fetch(httpUrl);
-        const httpData = await httpResponse.json();
-        questionText.innerText = 'Gagal memuat soal, coba lagi!';
-        return httpData.data.text;
-        console.error("Kamu pake http yaa...");
-    }
-});
+        try {
+            const ayat = await fetchAyat(randomQuestion.surah, randomQuestion.ayah);
+            questionText.innerHTML = `Usia: ${ageGroup.toUpperCase()}<br>Soal: Surah ${randomQuestion.surah}, Ayat ${randomQuestion.ayah}<br><br><p class="noto-naskh-arabic-ayat">${ayat}</p>`;
+        } catch (error) {
+            questionText.innerText = 'Gagal memuat soal, coba lagi!';
+            console.error(error);
+        }
+    });
     </script>
 </body>
 </html>
